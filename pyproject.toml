@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ft_sklearn"
+version = "0.0.1"
+description = "My sklearn-style ML library"
+authors = [
+    { name="Khalil", email="khalilsohail24@gmail.com" }
+]
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = []
+
+[tool.setuptools.packages.find]
+where = ["src"]
