@@ -1,15 +1,25 @@
-import numpy as np
+from abc import ABC, abstractmethod
 
-class BaseEstimator:
-    """
-    The parent class for all our ft_sklearn algorithms.
-    It enforces the common structure and handles utility features.
-    """
-    def fit(self, X, y):
-        # this function will be override.
-        raise NotImplementedError("Subclass must implement abstract method")
+class BaseEstimator(ABC):
+    def get_params(self):
+        return {
+            k: v for k, v in self.__dict__.items()
+            if not k.startswith("_")
+        }
 
+    def set_params(self, **params):
+        for k, v in params.items():
+            setattr(self, k, v)
+        return self
+
+
+class ClassifierMixin:
+    @abstractmethod
     def predict(self, X):
-        # this function will be override.
-        raise NotImplementedError("Subclass must implement abstract method")
+        ...
 
+class RegressorMixin:
+    @abstractmethod
+    def predict(self, X):
+        ...
+    
