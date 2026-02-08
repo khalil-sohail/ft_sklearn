@@ -1,10 +1,36 @@
+"""Min-Max normalization preprocessing scaler.
+
+Scales features to a fixed range, typically [0, 1].
+"""
+
 import numpy as np
 
-class MinMaxScaler():
+
+class MinMaxScaler:
+    """Scale features to a fixed range, typically [0, 1].
+    
+    The MinMax scaling formula for each feature is:
+        X_scaled = (X - X_min) / (X_max - X_min) * (max - min) + min
+    
+    Attributes:
+        feature_range (tuple): Desired range of transformed data (min, max).
+        copy (bool): If True, copy input data before transformation.
+        clip (bool): If True, clip transformed values to the feature range.
+        data_min_ (array): Minimum value for each feature in training set.
+        data_max_ (array): Maximum value for each feature in training set.
+        data_range_ (array): Range of each feature (max - min).
+        scale_ (array): Scaling factor for each feature.
+        min_ (array): Offset for each feature.
     """
-    Docstring for MinMaxScaler
-    """
+
     def __init__(self, feature_range=(0, 1), copy=True, clip=False):
+        """Initialize MinMaxScaler.
+        
+        Args:
+            feature_range (tuple, optional): Desired range (min, max). Default is (0, 1).
+            copy (bool, optional): If True, copy input data. Default is True.
+            clip (bool, optional): If True, clip to feature range. Default is False.
+        """
         self.copy = copy
         self.feature_range = feature_range
         self.clip = clip
@@ -17,13 +43,14 @@ class MinMaxScaler():
         self.max_ = None
 
     def fit(self, X):
-        """
-        Docstring for fit
+        """Compute min and max values for later scaling.
         
-        :param self: Description
-        :param X: Description
+        Args:
+            X (array-like): Feature matrix of shape (n_samples, n_features).
+        
+        Returns:
+            MinMaxScaler: Returns self for method chaining.
         """
-
         if not self.copy and X.dtype != float:
             X[:] = X.astype(float)
         elif self.copy:
@@ -40,13 +67,14 @@ class MinMaxScaler():
         return self
 
     def transform(self, X):
-        """
-        Docstring for transform
+        """Scale features to the specified range.
         
-        :param self: Description
-        :param X: Description
-        """
+        Args:
+            X (array-like): Feature matrix of shape (n_samples, n_features).
         
+        Returns:
+            array: Transformed feature matrix of same shape as X.
+        """
         if not self.copy and X.dtype != float:
             X[:] = X.astype(float)
         elif self.copy:
@@ -56,18 +84,29 @@ class MinMaxScaler():
         X += self.min_
         if self.clip:
             np.clip(X, self.feature_range[0], self.feature_range[1], out=X)
-        
+
         return X
-    
+
     def fit_transform(self, X):
-        return self.fit(X).transform(X)
-    
-    def inverse_transform(self, transformed_X):
-        """
-        Docstring for inverse_transform
+        """Fit to data, then transform it.
         
-        :param self: Description
-        :param transformed_X: Description
+        Args:
+            X (array-like): Feature matrix of shape (n_samples, n_features).
+        
+        Returns:
+            array: Transformed feature matrix of same shape as X.
+        """
+        return self.fit(X).transform(X)
+
+    def inverse_transform(self, transformed_X):
+        """Scale back the data to the original representation.
+        
+        Args:
+            transformed_X (array-like): Transformed feature matrix of shape
+                (n_samples, n_features).
+        
+        Returns:
+            array: Original feature matrix.
         """
         if not self.copy and transformed_X.dtype != float:
             transformed_X[:] = transformed_X.astype(float)
