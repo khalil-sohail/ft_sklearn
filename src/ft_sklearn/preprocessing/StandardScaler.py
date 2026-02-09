@@ -70,6 +70,7 @@ class StandardScaler:
         Returns:
             array: transformed feature matrix of same shape as X
         """
+        X = np.array(X)
         if self.copy:
             X = X.copy()
 

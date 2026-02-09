@@ -14,3 +14,4 @@ src/ft_sklearn.egg-info
 venv
 env
 .env
+.ipynb_checkpoints

@@ -47,7 +47,6 @@ class MinMaxScaler:
         
         Args:
             X (array-like): Feature matrix of shape (n_samples, n_features).
-        
         Returns:
             MinMaxScaler: Returns self for method chaining.
         """
@@ -71,7 +70,6 @@ class MinMaxScaler:
         
         Args:
             X (array-like): Feature matrix of shape (n_samples, n_features).
-        
         Returns:
             array: Transformed feature matrix of same shape as X.
         """
@@ -92,7 +90,6 @@ class MinMaxScaler:
         
         Args:
             X (array-like): Feature matrix of shape (n_samples, n_features).
-        
         Returns:
             array: Transformed feature matrix of same shape as X.
         """
@@ -104,7 +101,6 @@ class MinMaxScaler:
         Args:
             transformed_X (array-like): Transformed feature matrix of shape
                 (n_samples, n_features).
-        
         Returns:
             array: Original feature matrix.
         """

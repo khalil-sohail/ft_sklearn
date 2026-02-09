@@ -20,7 +20,7 @@ from ..utils import check_X_y, check_X
 import numpy as np
 
 
-class ft_SGDRegressor(BaseEstimator, RegressorMixin):
+class SGDRegressor(BaseEstimator, RegressorMixin):
     """stochastic gradient descent regressor
     
     fits a linear model using stochastic gradient descent. useful for large-scale
@@ -28,24 +28,26 @@ class ft_SGDRegressor(BaseEstimator, RegressorMixin):
     
     Attributes:
         lr (float): learning rate that controls the step size for weight updates
-        n_epochs (int): number of passes over the training dataset
-        coef_ (array): estimated coefficients for the linear regression problem
-        intercept_ (float): independent term in the linear model
+        max_iter (int): number of passes over the training dataset
+        coef_ (array): (weights) estimated coefficients for the linear regression problem
+        intercept_ (float): (bias) independent term in the linear model
     """
 
-    def __init__(self, learning_rate=0.01, n_epochs=1000):
+    def __init__(self, eta0=0.01, max_iter=1000, random_state=42):
         """initialize SGDRegressor
         
         Args:
-            learning_rate (float, optional): learning rate for gradient descent.
+            eta0 (float, optional): learning rate for gradient descent.
                 default is 0.01
-            n_epochs (int, optional): number of passes over training data.
+            max_iter (int, optional): number of passes over training data.
                 default is 1000
+            random_state (int, optinal): 
         """
-        self.lr = learning_rate
-        self.n_epochs = n_epochs
+        self.max_iter = max_iter
+        self.learning_rate = eta0
+        self.random_state = random_state
         self.coef_ = None
-        self.intercept_ = None
+        self.intercept_ = 0.0
 
     def fit(self, X, y):
         """fit the SGD regressor
@@ -53,36 +55,49 @@ class ft_SGDRegressor(BaseEstimator, RegressorMixin):
         Args:
             X (array-like): training feature matrix of shape (n_samples, n_features)
             y (array-like): target values of shape (n_samples,)
-        
         Returns:
             ft_SGDRegressor: returns self for method chaining
-        
         Raises:
             ValueError: if X or y have incorrect dimensions or shapes
-        
         Note:
             implementation steps:
-            1. initialize weights (zeros is usually fine for simple regression)
+            1. initialize weights
             2. loop over epochs
             3. inside epoch, shuffle data
             4. inside epoch, loop over every row
             5. update weights using the gradient descent formula
         """
-        pass
+        if self.random_state:
+            np.random.seed(self.random_state)
+
+        n_samples, n_features = X.shape 
+        self.coef_ = np.random.randn(n_features) 
+
+        for i in range(self.max_iter):
+            shuffled_X = np.random.permutation(n_samples)
+            for row in shuffled_X:
+                feature = X[row]
+                target = y[row]
+
+                pred = np.dot(feature, self.coef_) + self.intercept_
+                error = pred - target
+
+                # adjust the weight and bias
+                self.coef_ = self.coef_ - (self.learning_rate * error * feature)
+                self.intercept_ = self.intercept_ - (self.learning_rate * error)
+
+        return self
 
     def predict(self, X):
         """predict using the SGD regressor
         
         Args:
             X (array-like): feature matrix of shape (n_samples, n_features)
-        
         Returns:
             array: predicted values of shape (n_samples,)
-        
         Raises:
             ValueError: if X has incorrect dimensions
-        
         Note:
             uses matrix computation: y = X @ w + b
         """
-        pass
+        return np.dot(X, self.coef_) + self.intercept_
