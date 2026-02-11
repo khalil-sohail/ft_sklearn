@@ -1,6 +1,6 @@
 import numpy as np
 import pytest
-from ft_sklearn.neighbors.KNeighborsClassifier import KNeighborsClassifier
+from ft_sklearn.neighbors import KNeighborsClassifier
 
 @pytest.fixture
 def binary_data():
@@ -11,7 +11,7 @@ def binary_data():
     y = np.array([0, 0, 0, 1, 1, 1])
     return X, y
 
-@pytest.mark.skip(reason="Not implemented yet")
+# @pytest.mark.skip(reason="Not implemented yet")
 def test_knn(binary_data):
     X, y = binary_data
     model = KNeighborsClassifier(n_neighbors=1)
