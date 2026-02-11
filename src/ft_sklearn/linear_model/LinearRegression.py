@@ -1,4 +1,5 @@
-"""linear regression model using ordinary least squares
+"""
+linear regression model using ordinary least squares
 
 this module implements linear regression using the closed-form solution
 computed via the least squares method
@@ -36,10 +37,8 @@ class LinearRegression(BaseEstimator, RegressorMixin):
         Args:
             X (array-like): training feature matrix of shape (n_samples, n_features)
             y (array-like): target values of shape (n_samples,)
-        
         Returns:
             LinearRegression: returns self for method chaining
-        
         Raises:
             ValueError: if X or y have incorrect dimensions or shapes
         """
@@ -60,10 +59,8 @@ class LinearRegression(BaseEstimator, RegressorMixin):
         
         Args:
             X (array-like): feature matrix of shape (n_samples, n_features)
-        
         Returns:
             array: predicted values of shape (n_samples,)
-        
         Raises:
             ValueError: if X has incorrect dimensions
         """

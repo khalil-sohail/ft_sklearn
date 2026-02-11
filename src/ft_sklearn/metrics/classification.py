@@ -5,6 +5,13 @@ Provides functions to compute common classification performance metrics.
 
 import numpy as np
 
+def log_loss(y_true, y_probs):
+    """
+    y_true: actual labels (0 or 1)
+    y_probs: predicted probabilities for Class 1 (0.0 to 1.0)
+    """
+    y_probs = np.clip(y_probs, 1e-15, 1 - 1e-15)
+    return -np.mean(y_true * np.log(y_probs) + (1 - y_true) * np.log(1 - y_probs))
 
 def accuracy_score(y_true, y_pred):
     """Accuracy classification score.
